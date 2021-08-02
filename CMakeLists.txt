@@ -4,6 +4,8 @@ project(custom_allocator)
 
 set(PROJECT_VESRION 0.0.1)
 
+project(custom_allocator VERSION ${PROJECT_VESRION})
+
 set(CHUNK_SIZE "10" CACHE INTERNAL "chunk size")
 
 configure_file(
