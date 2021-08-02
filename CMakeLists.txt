@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.5)
 
 project(custom_allocator)
 
-set(PROJECT_VESRION 0.0.1)
-
+set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
+set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 project(custom_allocator VERSION ${PROJECT_VESRION})
 
 set(CHUNK_SIZE "10" CACHE INTERNAL "chunk size")

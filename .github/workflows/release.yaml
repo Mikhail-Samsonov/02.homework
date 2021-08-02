@@ -15,7 +15,7 @@ jobs:
           submodules: true
       - name: Project build
         run: |
-          cmake . -DCHUNK_SIZE=10
+          cmake . -DCHUNK_SIZE=10 -DPATCH_VERSION=${{ github.run_number }}
           cmake --build .
           cmake --build . --target package
       - name: Create Release
