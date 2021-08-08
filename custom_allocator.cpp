@@ -1,6 +1,5 @@
 #include "chunk.h"
 #include "custom_list.h"
-#include <array>
 #include <iostream>
 #include <limits>
 #include <map>
@@ -10,11 +9,12 @@
 int factorial(const int n)
 {
     int64_t result{ 1 };
+    int maxInt{ std::numeric_limits<int>::max() };
 
     for (int i = 2; i <= n; i++)
     {
         result *= i;
-        if (std::numeric_limits<int>::max() < result)
+        if (maxInt < result)
         {
             std::stringstream s;
             s << n;
@@ -31,13 +31,29 @@ int factorial(const int n)
     return result;
 }
 
-template <typename T, size_t N = CHUNK_SIZE>
+template <typename T, size_t N>
 struct AllocationStrategy
 {
+    AllocationStrategy()
+    {
+        auto p = std::malloc(N * sizeof(T));
+        if (!p)
+            throw std::bad_alloc();
+
+        m_memorypool = reinterpret_cast<T*>(p);
+    }
+
+    ~AllocationStrategy()
+    {
+        std::free(m_memorypool);
+    }
+
     T* allocate(size_t n)
     {
         m_capacity -= n;
-        return &m_memorypool.at(N - m_capacity - n);
+        if (m_capacity < 0)
+            throw std::runtime_error("Preallocated memory is empty");
+        return m_memorypool + N - m_capacity - n;
     }
 
     void deallocate(size_t n)
@@ -46,11 +62,11 @@ struct AllocationStrategy
     }
 
 private:
-    std::array<T, N> m_memorypool{};
-    size_t m_capacity = N;
+    T* m_memorypool;
+    int m_capacity = N;
 };
 
-template <typename T>
+template <typename T, size_t N = CHUNK_SIZE>
 struct CustomAllocator
 {
     using value_type = T;
@@ -66,7 +82,7 @@ struct CustomAllocator
 
     CustomAllocator()
     {
-        m_allocationStrategy = std::make_unique<AllocationStrategy<T>>();
+        m_allocationStrategy = std::make_unique<AllocationStrategy<T, N>>();
     };
 
     template <typename U>
@@ -91,7 +107,7 @@ struct CustomAllocator
     void destroy(T* p) { p->~T(); }
 
 private:
-    std::unique_ptr<AllocationStrategy<T>> m_allocationStrategy;
+    std::unique_ptr<AllocationStrategy<T, N>> m_allocationStrategy;
 };
 
 int main()
