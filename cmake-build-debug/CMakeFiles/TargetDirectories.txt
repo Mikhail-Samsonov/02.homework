@@ -1,5 +1,0 @@
-/home/mesam/Clion/otus/Otus_02.Allocator/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/mesam/Clion/otus/Otus_02.Allocator/cmake-build-debug/CMakeFiles/package_source.dir
-/home/mesam/Clion/otus/Otus_02.Allocator/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/mesam/Clion/otus/Otus_02.Allocator/cmake-build-debug/CMakeFiles/package.dir
-/home/mesam/Clion/otus/Otus_02.Allocator/cmake-build-debug/CMakeFiles/custom_allocator.dir
