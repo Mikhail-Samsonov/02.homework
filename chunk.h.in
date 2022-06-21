@@ -1,3 +1,0 @@
-#pragma once
-
-#cmakedefine CHUNK_SIZE @CHUNK_SIZE@
